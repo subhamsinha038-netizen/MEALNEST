@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MealNest – Discover Food & Drinks</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #FF5A1F;
+      --orange-light: #FF8C5A;
+      --cream: #FDF6EE;
+      --dark: #1A1208;
+      --mid: #3D2C10;
+      --text: #4A3728;
+      --muted: #9C8777;
+      --card-bg: #FFFFFF;
+      --border: #F0E6DA;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px;
+      height: 72px;
+      background: rgba(253, 246, 238, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 38px; height: 38px;
+      background: var(--orange);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 4px 14px rgba(255,90,31,0.4);
+      transform: rotate(-5deg);
+      transition: transform 0.3s;
+    }
+    .logo:hover .logo-icon { transform: rotate(5deg) scale(1.05); }
+
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      color: var(--dark);
+      letter-spacing: -0.3px;
+    }
+    .logo-text span { color: var(--orange); }
+
+    .nav-right {
+      display: flex; align-items: center; gap: 28px;
+    }
+
+    .nav-loc {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .nav-loc svg { color: var(--orange); }
+
+    .nav-greeting {
+      font-size: 13px;
+      color: var(--text);
+      font-weight: 500;
+    }
+    .nav-greeting strong { color: var(--orange); }
+
+    .nav-avatar {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--orange), #FF8C5A);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 16px;
+      cursor: pointer;
+      transition: box-shadow 0.2s;
+    }
+    .nav-avatar:hover { box-shadow: 0 0 0 3px rgba(255,90,31,0.3); }
+
+    /* ── HERO ── */
+    .hero {
+      margin-top: 72px;
+      position: relative;
+      height: 520px;
+      overflow: hidden;
+      display: flex; align-items: center;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+    }
+
+    .hero-img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: brightness(0.55) saturate(1.1);
+      transition: filter 0.4s;
+    }
+
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        100deg,
+        rgba(26,18,8,0.85) 0%,
+        rgba(26,18,8,0.5) 50%,
+        rgba(26,18,8,0.3) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      padding: 0 80px;
+      max-width: 680px;
+    }
+
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,90,31,0.2);
+      border: 1px solid rgba(255,90,31,0.4);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 12px; font-weight: 600;
+      color: #FFB89A;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 62px;
+      line-height: 1.08;
+      color: #FFFFFF;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+
+    .hero-title span {
+      color: var(--orange-light);
+      font-style: italic;
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.7);
+      font-weight: 300;
+      margin-bottom: 36px;
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+
+    .search-bar {
+      display: flex; align-items: center;
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+      animation: fadeUp 0.7s 0.3s ease both;
+    }
+
+    .search-icon {
+      padding: 0 18px;
+      color: var(--muted);
+      display: flex;
+    }
+
+    .search-bar input {
+      flex: 1;
+      border: none; outline: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      padding: 18px 0;
+      color: var(--dark);
+      background: transparent;
+    }
+    .search-bar input::placeholder { color: var(--muted); }
+
+    .search-btn {
+      margin: 6px;
+      padding: 12px 28px;
+      background: var(--orange);
+      border: none; cursor: pointer;
+      border-radius: 12px;
+      color: white;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px; font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+      white-space: nowrap;
+    }
+    .search-btn:hover { background: #E04A10; transform: scale(1.03); }
+
+    .hero-stats {
+      position: absolute; bottom: 36px; right: 80px; z-index: 2;
+      display: flex; gap: 32px;
+      animation: fadeUp 0.7s 0.4s ease both;
+    }
+
+    .stat {
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px; font-weight: 700;
+      color: white;
+    }
+    .stat-label {
+      font-size: 11px;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* ── FILTER CHIPS ── */
+    .filter-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 28px 80px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .filter-row::-webkit-scrollbar { display: none; }
+
+    .filter-label {
+      font-size: 13px; font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+      margin-right: 4px;
+    }
+
+    .chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 18px;
+      border-radius: 100px;
+      border: 1.5px solid var(--border);
+      font-size: 13px; font-weight: 500;
+      color: var(--text);
+      cursor: pointer;
+      white-space: nowrap;
+      background: white;
+      transition: all 0.2s;
+    }
+    .chip:hover { border-color: var(--orange); color: var(--orange); }
+    .chip.active {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: white;
+      box-shadow: 0 4px 12px rgba(255,90,31,0.3);
+    }
+
+    /* ── SECTION ── */
+    section { padding: 0 80px 64px; }
+
+    .section-header {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 32px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px; font-weight: 700;
+      color: var(--dark);
+      letter-spacing: -0.5px;
+    }
+
+    .section-title span { color: var(--orange); }
+
+    .see-all {
+      font-size: 13px; font-weight: 600;
+      color: var(--orange);
+      text-decoration: none;
+      display: flex; align-items: center; gap: 4px;
+      transition: gap 0.2s;
+    }
+    .see-all:hover { gap: 8px; }
+
+    /* ── RESTAURANT CARDS ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px rgba(61,44,16,0.13);
+    }
+
+    .card-img-wrap {
+      position: relative;
+      height: 180px;
+      overflow: hidden;
+    }
+
+    .card-img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s;
+    }
+    .card:hover .card-img { transform: scale(1.07); }
+
+    .card-badge {
+      position: absolute; top: 12px; left: 12px;
+      background: var(--orange);
+      color: white;
+      font-size: 11px; font-weight: 700;
+      padding: 4px 10px; border-radius: 100px;
+      letter-spacing: 0.5px;
+    }
+
+    .card-badge.green { background: #27AE60; }
+    .card-badge.blue  { background: #2980B9; }
+
+    .card-fav {
+      position: absolute; top: 12px; right: 12px;
+      width: 32px; height: 32px;
+      background: rgba(255,255,255,0.9);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+      transition: transform 0.2s;
+    }
+    .card:hover .card-fav { transform: scale(1.15); }
+
+    .card-body { padding: 18px 20px 20px; }
+
+    .card-top {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 6px;
+    }
+
+    .card-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px; font-weight: 700;
+      color: var(--dark);
+      line-height: 1.2;
+    }
+
+    .card-rating {
+      display: flex; align-items: center; gap: 4px;
+      background: #FFF5EF;
+      border: 1px solid #FFD5BB;
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 12px; font-weight: 700;
+      color: var(--orange);
+      white-space: nowrap;
+    }
+
+    .card-cuisine {
+      font-size: 13px; color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .card-footer {
+      display: flex; align-items: center; gap: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      font-size: 12px; color: var(--muted);
+    }
+
+    .card-meta {
+      display: flex; align-items: center; gap: 5px;
+    }
+
+    /* ── CATEGORY STRIP ── */
+    .category-strip {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 16px;
+      padding: 0 80px 64px;
+    }
+
+    .cat-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .cat-card:hover {
+      border-color: var(--orange);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(255,90,31,0.12);
+    }
+
+    .cat-emoji { font-size: 32px; margin-bottom: 10px; }
+
+    .cat-name {
+      font-size: 13px; font-weight: 600;
+      color: var(--text);
+    }
+
+    .cat-count {
+      font-size: 11px; color: var(--muted);
+      margin-top: 3px;
+    }
+
+    /* ── PROMO BANNER ── */
+    .promo-banner {
+      margin: 0 80px 64px;
+      border-radius: 24px;
+      background: linear-gradient(120deg, var(--dark) 0%, var(--mid) 100%);
+      padding: 48px 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .promo-banner::before {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(255,90,31,0.25), transparent 70%);
+      top: -100px; right: 100px;
+      pointer-events: none;
+    }
+
+    .promo-text { max-width: 420px; }
+
+    .promo-tag {
+      font-size: 11px; font-weight: 700;
+      color: var(--orange-light);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .promo-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 38px; line-height: 1.1;
+      color: white;
+      margin-bottom: 14px;
+    }
+    .promo-title span { color: var(--orange-light); font-style: italic; }
+
+    .promo-sub {
+      color: rgba(255,255,255,0.6);
+      font-size: 15px; font-weight: 300;
+      margin-bottom: 28px;
+    }
+
+    .promo-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--orange);
+      color: white; font-family: 'DM Sans', sans-serif;
+      font-size: 14px; font-weight: 600;
+      padding: 14px 28px; border-radius: 12px;
+      border: none; cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .promo-btn:hover { background: #E04A10; transform: scale(1.04); }
+
+    .promo-emojis {
+      font-size: 100px;
+      line-height: 1;
+      filter: drop-shadow(0 10px 30px rgba(0,0,0,0.4));
+      animation: float 3s ease-in-out infinite;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-12px); }
+    }
+
+    /* Staggered card entrance */
+    .card { animation: fadeUp 0.5s ease both; }
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.10s; }
+    .card:nth-child(3) { animation-delay: 0.15s; }
+    .card:nth-child(4) { animation-delay: 0.20s; }
+    .card:nth-child(5) { animation-delay: 0.25s; }
+    .card:nth-child(6) { animation-delay: 0.30s; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 28px;
+      font-size: 13px;
+    }
+    footer span { color: var(--orange); }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-icon">🍜</div>
+    <span class="logo-text">Meal<span>Nest</span></span>
+  </a>
+
+  <div class="nav-right">
+    <div class="nav-loc">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+        <circle cx="12" cy="9" r="2.5"/>
+      </svg>
+      Kolkata, WB
+    </div>
+    <span class="nav-greeting">Hey, <strong>Foodie</strong> 👋</span>
+    <div class="nav-avatar">👤</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg">
+    <img class="hero-img" src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=600&q=80" alt="food"/>
+    <img class="hero-img" src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=80" alt="food"/>
+    <img class="hero-img" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&q=80" alt="food"/>
+  </div>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <div class="hero-tag">🔥 200+ restaurants near you</div>
+    <h1 class="hero-title">Discover the best<br><span>food & drinks</span></h1>
+    <p class="hero-sub">Order from your favourite restaurants — fast delivery, every time.</p>
+    <div class="search-bar">
+      <span class="search-icon">
+        <svg width="18" height="18" fill="none" stroke="#9C8777" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+      </span>
+      <input type="text" placeholder="Search for restaurants, cuisines..."/>
+      <button class="search-btn">🔍 Search</button>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">200+</div>
+      <div class="stat-label">Restaurants</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">30 min</div>
+      <div class="stat-label">Avg Delivery</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">4.8★</div>
+      <div class="stat-label">Avg Rating</div>
+    </div>
+  </div>
+</div>
+
+<!-- FILTER CHIPS -->
+<div class="filter-row">
+  <span class="filter-label">Filter:</span>
+  <span class="chip active">🍽 All</span>
+  <span class="chip">⚡ Fast Delivery</span>
+  <span class="chip">⭐ Top Rated</span>
+  <span class="chip">🆓 Free Delivery</span>
+  <span class="chip">🌿 Pure Veg</span>
+  <span class="chip">💰 Under ₹200</span>
+  <span class="chip">🆕 New Arrivals</span>
+</div>
+
+<!-- CATEGORIES -->
+<div class="category-strip">
+  <div class="cat-card">
+    <div class="cat-emoji">🍕</div>
+    <div class="cat-name">Pizza</div>
+    <div class="cat-count">42 places</div>
+  </div>
+  <div class="cat-card">
+    <div class="cat-emoji">🍔</div>
+    <div class="cat-name">Burgers</div>
+    <div class="cat-count">38 places</div>
+  </div>
+  <div class="cat-card">
+    <div class="cat-emoji">🍣</div>
+    <div class="cat-name">Sushi</div>
+    <div class="cat-count">21 places</div>
+  </div>
+  <div class="cat-card">
+    <div class="cat-emoji">🍛</div>
+    <div class="cat-name">Biryani</div>
+    <div class="cat-count">55 places</div>
+  </div>
+  <div class="cat-card">
+    <div class="cat-emoji">🧁</div>
+    <div class="cat-name">Desserts</div>
+    <div class="cat-count">29 places</div>
+  </div>
+  <div class="cat-card">
+    <div class="cat-emoji">☕</div>
+    <div class="cat-name">Café</div>
+    <div class="cat-count">34 places</div>
+  </div>
+</div>
+
+<!-- POPULAR RESTAURANTS -->
+<section>
+  <div class="section-header">
+    <h2 class="section-title">Popular <span>Restaurants</span></h2>
+    <a href="#" class="see-all">See all →</a>
+  </div>
+
+  <div class="cards-grid">
+
+    <div class="card">
+      <div class="card-img-wrap">
+        <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Pizza_hut_old_logo.svg/300px-Pizza_hut_old_logo.svg.png" style="object-fit:contain; background:#cc0000; padding:20px;" alt="Pizza Hut"/>
+        <span class="card-badge">🔥 Trending</span>
+        <span class="card-fav">🤍</span>
+      </div>
+      <div class="card-body">
+        <div class="card-top">
+          <div class="card-name">Pizza Hut</div>
+          <div class="card-rating">⭐ 4.5</div>
+        </div>
+        <div class="card-cuisine">Pizza · Italian · Fast Food</div>
+        <div class="card-footer">
+          <span class="card-meta">⏱ 25–35 min</span>
+          <span class="card-meta">🛵 ₹30 delivery</span>
+          <span class="card-meta">💵 ₹400 for two</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-img-wrap">
+        <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Domino%27s_pizza_logo.svg/320px-Domino%27s_pizza_logo.svg.png" style="object-fit:contain; background:#006491; padding:20px;" alt="Domino's"/>
+        <span class="card-badge blue">⚡ Fast</span>
+        <span class="card-fav">❤️</span>
+      </div>
+      <div class="card-body">
+        <div class="card-top">
+          <div class="card-name">Domino's Pizza</div>
+          <div class="card-rating">⭐ 4.3</div>
+        </div>
+        <div class="card-cuisine">Pizza · Pasta · Garlic Bread</div>
+        <div class="card-footer">
+          <span class="card-meta">⏱ 20–30 min</span>
+          <span class="card-meta">🛵 Free</span>
+          <span class="card-meta">💵 ₹350 for two</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-img-wrap">
+        <img class="card-img" src="https://upload.wikimedia.org/wikipedia/en/thumb/b/bf/KFC_logo.svg/300px-KFC_logo.svg.png" style="object-fit:contain; background:#F40027; padding:20px;" alt="KFC"/>
+        <span class="card-badge green">🌟 4.6+</span>
+        <span class="card-fav">🤍</span>
+      </div>
+      <div class="card-body">
+        <div class="card-top">
+          <div class="card-name">KFC</div>
+          <div class="card-rating">⭐ 4.6</div>
+        </div>
+        <div class="card-cuisine">Fried Chicken · Burgers · Wraps</div>
+        <div class="card-footer">
+          <span class="card-meta">⏱ 30–40 min</span>
+          <span class="card-meta">🛵 ₹25 delivery</span>
+          <span class="card-meta">💵 ₹500 for two</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-img-wrap">
+        <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Burger_King_Logo.svg/300px-Burger_Ki

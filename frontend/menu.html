@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Menu</title>
+  <link rel="stylesheet" href="MENU.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+<div class="banner">
+    <div class="overlay">
+        <h1 id="restaurantName"></h1>
+        <p id="restaurantAddress"></p>
+        <p id="restaurantRating" class="rate"></p>
+    </div>
+</div>
+
+<div class="menu-container">
+    <div class="menu-header">
+        <h2>Menu</h2>
+        <a href="cart.html" class="cart-btn">🛒 Go to Cart</a>
+    </div>
+    <div id="menuList" class="grid"></div>
+</div>
+
+<!-- ORDER SUMMARY POPUP -->
+<div class="order-popup" id="orderPopup">
+    <div class="order-box">
+        <!-- HEADER -->
+        <div class="popup-header">
+            <h2>Order Summary</h2>
+            <span class="close-popup"
+            onclick="closeOrderPopup()">
+                &times;
+            </span>
+        </div>
+        <!-- RESTAURANT DETAILS -->
+        <div class="restaurant-details">
+            <img id="popupFoodImage">
+            <div>
+                <h3 id="popupRestaurantName"></h3>
+                <p id="popupRestaurantAddress"></p>
+                <span class="delivery-time">
+                    25-30 mins
+                </span>
+            </div>
+        </div>
+        <!-- FOOD ITEM -->
+        <div class="food-item">
+            <div>
+                <h4 id="popupFoodName"></h4>
+                <p>Quantity: 1</p>
+            </div>
+            <span id="popupFoodPrice"></span>
+        </div>
+        <!-- PRICE DETAILS -->
+        <div class="price-section">
+            <div class="price-row">
+                <span>Item Total</span>
+                <span id="itemTotal"></span>
+            </div>
+            <div class="price-row">
+                <span>Delivery Fee</span>
+                <span>₹10</span>
+            </div>
+            <div class="price-row">
+                <span>GST & Charges</span>
+                <span>₹8</span>
+            </div>
+            <div class="price-row total-price">
+                <span>Total Amount</span>
+                <span id="finalTotal"></span>
+            </div>
+        </div>
+        <!-- ADDRESS -->
+        <div class="address-box">
+            <h4>Delivery Address</h4>
+            <p id="deliveryAddress"></p>
+        </div>
+        <!-- BUTTON -->
+        <button type="button" class="payment-btn" id="pay-btn" onclick="placeOrder(currentFood)">
+            Proceed to payment
+        </button>
+    </div>
+</div>
+<script src="script.js"></script>
+<script>
+  loadMenu();
+  loadRestaurantBanner();
+  paymentsystem();
+</script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</body>
+</html>

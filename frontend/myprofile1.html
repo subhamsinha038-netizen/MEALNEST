@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MealNest Profile</title>
+
+    <link rel="stylesheet" href="MYPROFILE1.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+
+<body>
+    <div class="payment-container">
+        <!-- LEFT SIDEBAR -->
+        <div class="sidebar">
+            <div class="profile-cards">
+                <label for="profileInput" class="profile-image">
+                    <img id="profilePreview" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+                </label>
+                <input type="file" id="profileInput" accept="image/*" hidden>
+                <div id="usersname">
+                    <h3></h3>
+                </div>
+            </div>
+            <div class="menu-list">
+                <div class="menu-item" onclick="goToMyProfile()">
+                    <i class="fa-solid fa-user"></i>
+                    <span>My Profile</span>
+                </div>
+                <div class="menu-item" onclick="getMyOrders()">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span>My Orders</span>
+                </div>
+                <div class="menu-item" onclick="HelpAndSupport()">
+                    <i class="fa-solid fa-headset"></i>
+                    <span>Help & Support</span>
+                </div>
+            </div>
+            <div class="logout">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span onclick="logout()">Logout</span>
+            </div>
+        </div>
+        <!-- RIGHT CONTENT -->
+        <div class="main-content" id="contentArea">
+                <div class="profile-card">
+                    <h1>Profile Information</h1>
+                    <!-- NAME -->
+                    <div class="info-box">
+                        <div class="icon-circle">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <div class="info-text">
+                            <p>Full Name</p>
+                            <h3 id="fullName"></h3>
+                        </div>
+                    </div>
+                    <!-- EMAIL -->
+                    <div class="info-box">
+                        <div class="icon-circle">
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+                        <div class="info-text">
+                            <p>Email Address</p>
+                            <h3 id="email"></h3>
+                        </div>
+                    </div>
+                    <!-- ADDRESS -->
+                    <div class="info-box address-box">
+                        <div class="icon-circle">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <div class="info-text">
+                            <p>Delivery Address</p>
+                            <h3 id="address"></h3>
+                            <span class="default-badge">
+                                <i class="fa-regular fa-circle-check"></i>
+                                Default Address
+                            </span>
+                        </div>
+                        <button id="editAddressBtn" class="edit-btn" onclick="openPopup()">
+                            <i class="fa-solid fa-pen"></i>
+                            Edit
+                        </button>
+                    </div>
+                </div>
+
+        <div class="popup" id="addressPopup">
+            <div class="popup-content">
+                <div class="popup-top">
+                    <h2>Edit Address</h2>
+                    <i class="fa-solid fa-xmark"
+                    onclick="closePopup()"></i>
+                </div>
+                <p class="popup-subtitle">
+                    Update your delivery address
+                </p>
+                <textarea id="newAddress"></textarea>
+                <div class="popup-buttons">
+                    <button class="cancel-btn"
+                        onclick="closePopup()">
+                        Cancel
+                    </button>
+                    <button class="save-btn"
+                        onclick="saveAddress()">
+                        Save Address
+                    </button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>showusersname();</script>
+
+</body>
+
+</html>
